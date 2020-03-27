@@ -6,10 +6,10 @@ function Menu(props) {
     const renderMenuItem = ({ item, index }) => {
         return (
             <ListItem
-                key={index}
+                key={index}    //index is supplied through KeyExtractor
                 title={item.name}
                 subtitle={item.description}
-                hideChevron={true}
+                hideChevron={true}  //remove the right scroll in IOS
                 leftAvatar={{ source: require('./images/uthappizza.png') }}
             />
         )
