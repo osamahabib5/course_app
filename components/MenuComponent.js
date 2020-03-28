@@ -11,6 +11,10 @@ function Menu(props) {
                 subtitle={item.description}
                 hideChevron={true}  //remove the right scroll in IOS
                 leftAvatar={{ source: require('./images/uthappizza.png') }}
+                onPress={() => props.onPress(item.id)}   //select the dish from the list
+            //item id will be passed as parameter when the picture is pressed and that will come in maincomponent
+            //which will set the selected dish, and then dish detail will be re-rendered with the selected dish
+            //takes an image and renders it
             />
         )
     }
