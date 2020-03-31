@@ -6,8 +6,8 @@ import Dishdetail from './DishDetailComponent';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import About from './AboutUsComponent';
-import Contact from './ContactUs'
+import About from './AboutComponent';
+import Contact from './ContactComponent';
 //Stack will use menu component and dishdetail component
 //and setup navigation between them
 //supply configuration for the 2 navigations 
@@ -21,7 +21,6 @@ function MainNavigator() {
     return (
         <Drawer_Creat.Navigator>
             <Drawer_Creat.Screen name="Home" component={Home_Navigator} />
-
             <Drawer_Creat.Screen name="About Us" component={About_Navigator} />
             <Drawer_Creat.Screen name="Menu" component={MyStack} />
             <Drawer_Creat.Screen name="Contact Us" component={Contact_Navigator} />
