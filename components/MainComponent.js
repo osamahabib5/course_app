@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import Menu from './MenuComponent';
-import { View, Image, StyleSheet, ScrollView } from 'react-native';
+import { View, Image, StyleSheet, ScrollView, Text } from 'react-native';
 import Home from './HomeComponent';
 import Dishdetail from './DishDetailComponent';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
 import { Icon } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-safe-area-context'
 //Stack will use menu component and dishdetail component
 //and setup navigation between them
 //supply configuration for the 2 navigations 
@@ -18,30 +18,39 @@ const Drawer = createStackNavigator();
 const Drawer_Creat = createDrawerNavigator();
 
 const CustomDrawerContentComponent = (props) => (
-    <ScrollView>
-        {/* nothing else will be laid out here */}
+    <DrawerContentScrollView {...props}>
+
         <SafeAreaView style={styles.container}
             forceInset={{ top: 'always', horizontal: 'never' }}>
             {/* forceinset means drawer will be displayed on top even covering the status */}
-            <View style={styles.header}>
+            <View style={styles.DrawerHeader}>
                 {/* these two views should be displayed horiontally with the first view being displayed with flex 1
                 and the second being displayed with flex 2 */}
+                {/* we have set the header here which will show the logo and name of the restaurant */}
                 <View style={{ flex: 1 }}>
                     <Image source={require('./images/logo.png')} style={styles.drawing} />
                 </View>
                 <View style={{ flex: 2 }}>
-                    <Text style={styles.drawerText}>Ristorante Con Fusion</Text>
+                    <Text style={styles.drawerHeaderText}>Ristorante Con Fusion</Text>
                 </View>
             </View>
-            <DrawerItems {...props} />
+            <DrawerItemList {...props} />
+            {/* what we are doing here is we are defining View on the top and below that, we are laying out
+            all the drawerItems that we already have. So the draweritems is what is automatically constructed
+            by createDrawerNavigator */}
             {/* we used the above statement to pass on whatever props DrawerItem component has */}
         </SafeAreaView>
-    </ScrollView>
+    </DrawerContentScrollView>
 );
 //drawer based component
 function MainNavigator() {
-    return (
-        <Drawer_Creat.Navigator>
+    return (   //drawerContent renders a DrawerItemList component inside a ScrollView. for customization
+        // we can use DrawerContentScrollView
+        <Drawer_Creat.Navigator
+            drawerStyle={{
+                backgroundColor: '#D1C4E9'
+            }}
+            drawerContent={props => <CustomDrawerContentComponent{...props} />}>
             <Drawer_Creat.Screen name="Home" component={Home_Navigator}
                 options={{
                     drawerIcon: ({ activeTintColor }) => (  //activetintcolor will specify how to render icon in the 
@@ -210,5 +219,28 @@ class Main extends Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    DrawerHeader: {
+        backgroundColor: '#512DA8',
+        height: 140,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row'
+    },
+    drawerHeaderText: {
+        color: 'white',
+        fontSize: 24,
+        fontWeight: 'bold'
+    },
+    drawing: {
+        margin: 10,
+        width: 80,
+        height: 60
+    }
+})
 
 export default Main;
