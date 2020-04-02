@@ -33,7 +33,6 @@ class Menu extends Component {
                     hideChevron={true}  //remove the right scroll in IOS
                     leftAvatar={{ source: require('./images/uthappizza.png') }}
                     onPress={() => navigate('Dishdetail', { dishId: item.id })}
-                    navigate={this.props.navigation}
                 //onPress will show the view of Dishdetail component and the item.id would be available
                 //to the Dishdetail component onPress
                 //select the dish from the list
