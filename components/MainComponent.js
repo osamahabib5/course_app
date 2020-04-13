@@ -12,6 +12,22 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 //Stack will use menu component and dishdetail component
 //and setup navigation between them
 //supply configuration for the 2 navigations 
+import { connect } from 'react-redux'
+import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreater'
+const mapStatetoProps = state => {
+    return {
+        dishes: state.dishes,
+        comments: state.comments,
+        promotions: state.promotions,
+        leaders: state.leaders
+    }
+}
+const mapDispatchtoProps = dispatch => ({
+    fetchDishes: () => dispatch(fetchDishes()),
+    fetchComments: () => dispatch(fetchComments()),
+    fetchPromos: () => dispatch(fetchPromos()),
+    fetchLeaders: () => dispatch(fetchLeaders()),
+})
 const Stack = createStackNavigator();
 const Drawer = createStackNavigator();
 //creating object for createDrawerNavigator
@@ -198,6 +214,13 @@ function Contact_Navigator() {
 }
 class Main extends Component {
 
+    //each of functions below would send a fetch to the server  
+    componentDidMount() {
+        this.props.fetchDishes();
+        this.props.fetchComments();
+        this.props.fetchLeaders();
+        this.props.fetchPromos();
+    }
     render() {
         return (
             <View style={{
@@ -243,4 +266,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Main;
+export default connect(mapStatetoProps, mapDispatchtoProps)(Main);

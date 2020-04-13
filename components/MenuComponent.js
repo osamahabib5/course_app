@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import { View, FlatList } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import { DISHES } from '../shared/dishes';
+import { Tile } from 'react-native-elements';
+import { connect } from 'react-redux'
+import { baseUrl } from '../shared/baseUrl'
+const mapStatetoProps = state => {
+    return {
+        dishes: state.dishes
+    }
+}
 
 
 class Menu extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            dishes: DISHES
-
-        }
-    }
     static navigationOptions = {
         title: 'Menu'
     }
@@ -26,12 +25,12 @@ class Menu extends Component {
         const { navigate } = this.props.navigation;
         const renderMenuItem = ({ item, index }) => {
             return (
-                <ListItem
+                <Tile
                     key={index}    //index is supplied through KeyExtractor
                     title={item.name}
-                    subtitle={item.description}
-                    hideChevron={true}  //remove the right scroll in IOS
-                    leftAvatar={{ source: require('./images/uthappizza.png') }}
+                    caption={item.description}
+                    featured //remove the right scroll in IOS
+                    imageSrc={{ uri: baseUrl + item.image }}
                     onPress={() => navigate('Dishdetail', { dishId: item.id })}
                 //onPress will show the view of Dishdetail component and the item.id would be available
                 //to the Dishdetail component onPress
@@ -45,7 +44,7 @@ class Menu extends Component {
 
         return (
             <FlatList
-                data={this.state.dishes}    //props.dishes i
+                data={this.props.dishes.dishes}    //props.dishes i
                 renderItem={renderMenuItem}  //renderItem: how to render each item in the list,
                 //this takes a parameter which renders each item at the list
                 //props.dishes are an object and FLatlist would iterate over each of them
@@ -59,4 +58,4 @@ class Menu extends Component {
 
 }
 
-export default Menu;
+export default connect(mapStatetoProps)(Menu);

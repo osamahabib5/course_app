@@ -2,22 +2,24 @@ import React, { Component } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
 import { LEADERS } from '../shared/leaders';
+import { connect } from 'react-redux'
+import { baseUrl } from '../shared/baseUrl'
 //created about component to use drawer based menu
-class About extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            leaders: LEADERS     //defined leaders as state to be used
-        }
+const mapStatetoProps = state => {
+    return {
+        leaders: state.leaders
     }
+}
+class About extends Component {
     render() {
         const renderAboutItem = ({ item, index }) => {
+            // const { params } = this.props.navigation.state;
             return (
                 <ListItem
                     key={index}
                     title={item.name}
                     subtitle={item.description}
-                    leftAvatar={{ source: require('./images/alberto.png') }}
+                    leftAvatar={{ source: { uri: baseUrl + item.image } }}
                     hideChevron={true}
                 />
             )
@@ -37,7 +39,7 @@ class About extends Component {
                 </Card>
                 <Card title="Corporate Information">
                     <FlatList
-                        data={this.state.leaders}
+                        data={this.props.leaders.leaders}
                         renderItem={renderAboutItem}
                         keyExtractor={item => item.id.toString()}
                     />
@@ -51,4 +53,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default About;
+export default connect(mapStatetoProps)(About);
