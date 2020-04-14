@@ -3,6 +3,7 @@ import { View, FlatList } from 'react-native';
 import { Tile } from 'react-native-elements';
 import { connect } from 'react-redux'
 import { baseUrl } from '../shared/baseUrl'
+import { Loading } from './LoadingComponent';
 const mapStatetoProps = state => {
     return {
         dishes: state.dishes
@@ -41,19 +42,33 @@ class Menu extends Component {
                 />
             )
         }
+        if (this.props.dishes.isLoading) {
+            return (
+                <Loading />
+            );
+        }
+        else if (this.props.dishes.errMess) {
+            return (
+                <View>
+                    <Text>{props.dishes.errMess}</Text>
+                </View>
+            );
+        }
+        else {
+            return (
+                <FlatList
+                    data={this.props.dishes.dishes}    //props.dishes i
+                    renderItem={renderMenuItem}  //renderItem: how to render each item in the list,
+                    //this takes a parameter which renders each item at the list
+                    //props.dishes are an object and FLatlist would iterate over each of them
+                    //and render each given on the view in renderItem
+                    keyExtractor={item => item.id.toString()} //keyExtractor:
+                //extract one of props of each item and use it as a key
+                />
 
-        return (
-            <FlatList
-                data={this.props.dishes.dishes}    //props.dishes i
-                renderItem={renderMenuItem}  //renderItem: how to render each item in the list,
-                //this takes a parameter which renders each item at the list
-                //props.dishes are an object and FLatlist would iterate over each of them
-                //and render each given on the view in renderItem
-                keyExtractor={item => item.id.toString()} //keyExtractor:
-            //extract one of props of each item and use it as a key
-            />
+            )
+        }
 
-        )
     }
 
 }
