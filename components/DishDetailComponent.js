@@ -5,12 +5,19 @@ import { DISHES } from '../shared/dishes';
 import { COMMENTS } from '../shared/comment'
 import { connect } from 'react-redux'
 import { baseUrl } from '../shared/baseUrl'
+import { postFavourite } from '../redux/ActionCreater';
 const mapStatetoProps = state => {
     return {
         dishes: state.dishes,
-        comments: state.comments
+        comments: state.comments,
+        favourites: state.favourites
     }
 }
+
+const mapDispatchToProps = dispatch => ({
+    postFavourite: (dishId) => dispatch(postFavourite(dishId))
+})
+
 
 //render details of the dish
 //card to create a view
@@ -75,10 +82,7 @@ class Dishdetail extends Component {
         };
     }
     markFavourite(dishId) {
-        this.setState({
-            favourites: this.state.favourites.concat(dishId)
-            //this will add this dishId to the favourites array
-        })
+        this.props.postFavourite(dishId);
     }
     render() {
         const { dishId } = this.props.route.params; //getting the dishId of the
@@ -88,7 +92,7 @@ class Dishdetail extends Component {
                 {/* we are using [+dishId] to show only
         that dish whose dishId we have retrieved and + is used to convert the id from string to number  */}
                 <RenderDish dish={this.props.dishes.dishes[+dishId]}
-                    favourites={this.state.favourites.some(el => el === dishId)}  //return true if any dishId im
+                    favourites={this.props.favourites.some(el => el === dishId)}  //return true if any dishId im
                     //the array has the same id as dishID
                     onPress={() => this.markFavourite(dishId)}
                 />
@@ -99,4 +103,4 @@ class Dishdetail extends Component {
     }
 }
 
-export default connect(mapStatetoProps)(Dishdetail);
+export default connect(mapStatetoProps, mapDispatchToProps)(Dishdetail);
