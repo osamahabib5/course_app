@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 //supply configuration for the 2 navigations 
 import { connect } from 'react-redux'
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreater'
+import Reservation from './ReservationComponent';
 const mapStatetoProps = state => {
     return {
         dishes: state.dishes,
@@ -105,6 +106,16 @@ function MainNavigator() {
                             type='font-awesome'
                             size={22}
                             color={activeTintColor}
+                        />)
+                }} />
+            <Drawer_Creat.Screen name="Reserve Table" component={ReservationNavigator}
+                options={{
+                    drawerIcon: ({ activeTintColor }) => (  //activetintcolor will specify how to render icon in the 
+                        <Icon                              //drawer
+                            name='cutlery'
+                            type='font-awesome'
+                            size={24}
+                            iconStyle={{ color: activeTintColor }}
                         />)
                 }} />
         </Drawer_Creat.Navigator>
@@ -211,6 +222,36 @@ function Contact_Navigator() {
                 ),
             })} />
         </Drawer.Navigator>)
+}
+function ReservationNavigator() {
+    return (
+        <Drawer.Navigator
+            screenOptions={(props) => ({     //screen options will be applied to all screens in the stack navigator Component
+                headerStyle: {
+                    backgroundColor: "#512DA8"
+                },
+                headerTitleStyle: {
+                    color: "#fff"
+                },
+                headerTintColor: "#fff",
+                headerLeft: () => (
+                    <Icon name="menu" size={24}
+                        iconStyle={{ color: 'white' }}
+                        onPress={() => props.navigation.toggleDrawer()} />
+                )
+            })}>
+            <Drawer.Screen name="Reservation" component={Reservation} options={(props) => ({  ///The options prop can be used to configure individual screens inside the navigator
+                headerLeft: () => (
+                    <Icon  //we have passed props in options prop and then extracted navigation prop from it
+                        name='menu'
+                        color='white'
+                        size={24}
+                        onPress={() => props.navigation.toggleDrawer()}  //open drawer if closed and viceversa
+                    />
+                ),
+            })} />
+        </Drawer.Navigator>)
+
 }
 class Main extends Component {
 
