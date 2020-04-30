@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
-import { View, Text, ScrollView, FlatList } from 'react-native';
-import { Card, Icon } from 'react-native-elements';
-import { DISHES } from '../shared/dishes';
-import { COMMENTS } from '../shared/comment'
+import React, { Component, useState } from 'react';
+import { View, Text, ScrollView, FlatList, Modal, Button, StyleSheet } from 'react-native';
+import { Card, Icon, Rating, Input } from 'react-native-elements';
 import { connect } from 'react-redux'
 import { baseUrl } from '../shared/baseUrl'
 import { postFavourite } from '../redux/ActionCreater';
@@ -22,8 +20,8 @@ const mapDispatchToProps = dispatch => ({
 //render details of the dish
 //card to create a view
 function RenderDish(props) {
+    const [showModal, toggleModal] = useState(false);
     const dish = props.dish;
-
     if (dish != null) {
         return (
             <Card                   //to render the dish
@@ -35,12 +33,64 @@ function RenderDish(props) {
                 </Text>
                 {/* we are doing this to mark favourites amongst the dishes
                 //raised displays icon in the form of a round button */}
-                <Icon
-                    name={props.favourites ? 'heart' : 'heart-o'}  //display heart if dish is favourite
-                    type='font-awesome'
-                    color="#f50"
-                    onPress={() => props.favourites ? console.log('Already favorite') : props.onPress()}
-                />
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: 135
+                }}>
+                    <Icon
+                        name={props.favourites ? 'heart' : 'heart-o'}  //display heart if dish is favourite
+                        type='font-awesome'
+                        color="#f50"
+                        onPress={() => props.favourites ? console.log('Already favorite') : props.onPress()}
+                    />
+                    <View style={{
+                        margin: 15
+                    }}>
+
+                    </View>
+                    <Icon
+                        name={'pencil'}
+                        type='font-awesome'
+                        color="#f50"
+                        onPress={() => toggleModal(!showModal)}
+                    />
+                </View>
+                <Modal
+                    animationType={"slide"}//how do u want your modal to be shown
+                    transparent={false} //do u want to make modal transparent
+                    visible={showModal} //if showModal is true, it is visible and vice versa
+                    onDismiss={toggleModal} //this will hide the modal
+                    onRequestClose={toggleModal}>
+                    {/* same as above */}
+                    <Rating
+                        type='star'
+                        ratingCount={5} //ratingsize
+                        imageSize={40} //size of each rating image
+                        showRating  //Determines if to show the reviews above the rating
+                        onFinishRating={() => { console.log("Rating done!") }}
+                    />
+                    <Input
+                        placeholder='Author'
+                        leftIcon={{ type: 'font-awesome', name: 'user' }}
+                    />
+                    <Input
+                        placeholder='Comments'
+                        leftIcon={{ type: 'font-awesome', name: 'comment' }}
+                    />
+                    <View style={styles.modalbuttons}>
+                        <Button
+                            color="#512DA8"
+                            title="Submit"
+                        />
+                    </View>
+                    <View style={styles.modalbuttons}>
+                        <Button
+                            color="#512DA8"
+                            title="Close"
+                            onPress={toggleModal}
+                        />
+                    </View>
+                </Modal>
             </Card>
         )
     }
@@ -102,5 +152,9 @@ class Dishdetail extends Component {
         )
     }
 }
-
+const styles = StyleSheet.create({
+    modalbuttons: {
+        marginTop: 20
+    }
+})
 export default connect(mapStatetoProps, mapDispatchToProps)(Dishdetail);
