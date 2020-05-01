@@ -2,6 +2,8 @@ import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
 
 export const fetchComments = () => (dispatch) => {
+    dispatch(commentsLoading)
+
     return fetch(baseUrl + 'comments')
         .then(response => {
             if (response.ok) {
@@ -25,7 +27,25 @@ export const commentsFailed = (errmess) => ({
     type: ActionTypes.COMMENTS_FAILED,
     payload: errmess
 });
-
+export const commentsLoading = () => {
+    type: ActionTypes.COMMENTS_LOADING
+}
+export const postComments = (dishId, author, rating, comment, id) => (dispatch) => {
+    const d = new Date();
+    const comments =
+        [{
+            dishId: dishId,
+            author: author,
+            rating: rating,
+            comment: comment,
+            date: d.toISOString(),
+            id: id
+        }]
+    //setTimeout for 2 second
+    setTimeout(() => {
+        dispatch(addComments(comments));
+    }, 2000);
+};
 export const addComments = (comments) => ({
     type: ActionTypes.ADD_COMMENTS,
     payload: comments

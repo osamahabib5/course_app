@@ -6,7 +6,8 @@ import { baseUrl } from '../shared/baseUrl'
 import { Loading } from './LoadingComponent';
 const mapStatetoProps = state => {
     return {
-        dishes: state.dishes
+        dishes: state.dishes,
+        comments: state.comments
     }
 }
 
