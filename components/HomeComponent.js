@@ -86,6 +86,9 @@ class Home extends Component {
         return (
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
                 <Animated.View style={{ width: '100%', transform: [{ translateX: xpos1 }] }}>
+                    {/* x position of animatedView would change as per the xpos value changes
+                    card appear from right side and disappear to the left side
+                    translateX apply to x pos of top left corner of card */}
                     <RenderItem item={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
                         isLoading={this.props.dishes.isLoading}
                         erreMess={this.props.dishes.erreMess}
