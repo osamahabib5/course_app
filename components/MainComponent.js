@@ -9,6 +9,7 @@ import About from './AboutComponent';
 import Contact from './ContactComponent';
 import { Icon } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context'
+import Favorites from './FavouriteComponent';
 //Stack will use menu component and dishdetail component
 //and setup navigation between them
 //supply configuration for the 2 navigations 
@@ -113,6 +114,16 @@ function MainNavigator() {
                     drawerIcon: ({ activeTintColor }) => (  //activetintcolor will specify how to render icon in the 
                         <Icon                              //drawer
                             name='cutlery'
+                            type='font-awesome'
+                            size={24}
+                            iconStyle={{ color: activeTintColor }}
+                        />)
+                }} />
+            <Drawer_Creat.Screen name="My Favorites" component={Favorites_Navigator}
+                options={{
+                    drawerIcon: ({ activeTintColor }) => (  //activetintcolor will specify how to render icon in the 
+                        <Icon                              //drawer
+                            name='heart'
                             type='font-awesome'
                             size={24}
                             iconStyle={{ color: activeTintColor }}
@@ -252,6 +263,35 @@ function ReservationNavigator() {
             })} />
         </Drawer.Navigator>)
 
+}
+function Favorites_Navigator() {
+    return (
+        <Drawer.Navigator
+            screenOptions={(props) => ({     //screen options will be applied to all screens in the stack navigator Component
+                headerStyle: {
+                    backgroundColor: "#512DA8"
+                },
+                headerTitleStyle: {
+                    color: "#fff"
+                },
+                headerTintColor: "#fff",
+                headerLeft: () => (
+                    <Icon name="menu" size={24}
+                        iconStyle={{ color: 'white' }}
+                        onPress={() => props.navigation.toggleDrawer()} />
+                )
+            })}>
+            <Drawer.Screen name="My Favourites" component={Favorites} options={(props) => ({  ///The options prop can be used to configure individual screens inside the navigator
+                headerLeft: () => (
+                    <Icon  //we have passed props in options prop and then extracted navigation prop from it
+                        color='white'
+                        name="menu"
+                        size={24}
+                        onPress={() => props.navigation.toggleDrawer()}  //open drawer if closed and viceversa
+                    />
+                ),
+            })} />
+        </Drawer.Navigator>)
 }
 class Main extends Component {
 
